@@ -1,8 +1,8 @@
 const express = require("express");
-const AmakuruRoute = require("./Amakuru.js");
+const AmakuruRoute = require("./api/amakuru.js");
 
 const routes = express.Router();
 
-routes.get("/amakuru", AmakuruRoute);
+routes.use("/amakuru", AmakuruRoute);
 
 module.exports = routes;
