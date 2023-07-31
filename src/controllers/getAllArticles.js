@@ -1,10 +1,16 @@
 const getLinksFromSitemap = require("../utilities/findLinksOnTheWeb");
+const getContentsFromLinks = require("../utilities/getDataFromUrl");
 
-let kinSitemapFiles = [
+/*
+** 
   "https://www.kigalitoday.com/sitemap.xml",
   "https://yegob.rw/post-sitemap31.xml",
-  "https://techinika.com/post-sitemap.xml",
   "https://igihe.com/sitemap.xml",
+**
+*/
+let kinSitemapFiles = [
+  "https://techinika.com/post-sitemap.xml",
+  // "https://igihe.com/sitemap.xml",
 ];
 
 let enSitemapFiles = [
@@ -13,16 +19,33 @@ let enSitemapFiles = [
 ];
 
 const getAllArticles = {
-  kinyarwanda: (req, res, next) => {
+  kinyarwanda: async (req, res, next) => {
     const lang = req.query.lang;
     try {
       if (lang === "kin") {
-        getLinksFromSitemap(kinSitemapFiles);
+        let links = await getLinksFromSitemap(kinSitemapFiles);
+        let data = await getContentsFromLinks(links);
+        console.log(data);
+        res.json({ status: 200, links: data });
       }
-    } catch (error) {}
+    } catch (error) {
+      res.json({ status: 500, message: error.message });
+    }
   },
 
-  english: () => {},
+  english: async (req, res, next) => {
+    const lang = req.query.lang;
+    try {
+      if (lang === "en") {
+        let links = await getLinksFromSitemap(enSitemapFiles);
+        let data = await getContentsFromLinks(links);
+        console.log(data);
+        res.json({ status: 200, links: data });
+      }
+    } catch (error) {
+      res.json({ status: 500, message: error.message });
+    }
+  },
 };
 
 module.exports = getAllArticles;

@@ -1,9 +1,8 @@
 const express = require("express");
+const { kinyarwanda } = require("../../controllers/getAllArticles");
 
 const route = express.Router();
 
-route.get("/", (req, res) => {
-  res.json({ status: 200, message: "You are getting all the news" });
-});
+route.get("/", kinyarwanda);
 
 module.exports = route;

@@ -17,6 +17,7 @@ const getLinksFromSitemap = async (sitemaps) => {
       console.error(`Error fetching sitemap: ${sitemap}`, error);
     }
   }
+  console.log(data)
   return data;
 };
 
