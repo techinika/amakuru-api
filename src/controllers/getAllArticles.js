@@ -26,7 +26,7 @@ const getAllArticles = {
         let links = await getLinksFromSitemap(kinSitemapFiles);
         let data = await getContentsFromLinks(links);
         console.log(data);
-        res.json({ status: 200, links: data });
+        res.json({ status: 200, data: data });
       }
     } catch (error) {
       res.json({ status: 500, message: error.message });
@@ -40,7 +40,7 @@ const getAllArticles = {
         let links = await getLinksFromSitemap(enSitemapFiles);
         let data = await getContentsFromLinks(links);
         console.log(data);
-        res.json({ status: 200, links: data });
+        res.json({ status: 200, data: data });
       }
     } catch (error) {
       res.json({ status: 500, message: error.message });
