@@ -1,13 +1,8 @@
-const express = require("express");
-const usersControllers = require("../../controllers/users");
+import express from "express";
+import UserController from "../../controllers/UserController";
 
 const route = express.Router();
 
-route.get("/", usersControllers.getUsers);
-route.get("/:id", usersControllers.getOneUser);
-route.post("/", usersControllers.createUsers);
-route.post("/all", usersControllers.bulkAddUsers);
-route.put("/:id", usersControllers.updateUsers);
-route.delete("/:id", usersControllers.deleteUsers);
+route.post("/create", UserController.createUser);
 
-module.exports = route;
+export default route;

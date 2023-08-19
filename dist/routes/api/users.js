@@ -1,12 +1,11 @@
 "use strict";
-const express = require("express");
-const usersControllers = require("../../controllers/users");
-const route = express.Router();
-route.get("/", usersControllers.getUsers);
-route.get("/:id", usersControllers.getOneUser);
-route.post("/", usersControllers.createUsers);
-route.post("/all", usersControllers.bulkAddUsers);
-route.put("/:id", usersControllers.updateUsers);
-route.delete("/:id", usersControllers.deleteUsers);
-module.exports = route;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const UserController_1 = __importDefault(require("../../controllers/UserController"));
+const route = express_1.default.Router();
+route.post("/create", UserController_1.default.createUser);
+exports.default = route;
 //# sourceMappingURL=users.js.map

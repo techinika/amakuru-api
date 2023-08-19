@@ -1,12 +1,16 @@
 "use strict";
-const axios = require("axios");
-const { parseStringPromise } = require("xml2js");
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const axios_1 = __importDefault(require("axios"));
+const xml2js_1 = require("xml2js");
 // sitemap files
 const getLinksFromSitemap = async (sitemaps) => {
     let data = [];
     for (let sitemap of sitemaps) {
         try {
-            const response = await axios.get(sitemap);
+            const response = await axios_1.default.get(sitemap);
             const sitemapContent = response.data;
             const sitemapObject = await parseXMLSitemap(sitemapContent);
             const urls = sitemapObject.urlset.url;
@@ -22,7 +26,7 @@ const getLinksFromSitemap = async (sitemaps) => {
 };
 async function parseXMLSitemap(sitemapContent) {
     try {
-        const sitemapObject = await parseStringPromise(sitemapContent);
+        const sitemapObject = await (0, xml2js_1.parseStringPromise)(sitemapContent);
         return sitemapObject;
     }
     catch (error) {
@@ -30,5 +34,5 @@ async function parseXMLSitemap(sitemapContent) {
         throw error;
     }
 }
-module.exports = getLinksFromSitemap;
+exports.default = getLinksFromSitemap;
 //# sourceMappingURL=findLinksOnTheWeb.js.map

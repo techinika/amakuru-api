@@ -1,13 +1,13 @@
-const axios = require("axios");
-const cheerio = require("cheerio");
+import axios from "axios";
+import cheerio from "cheerio";
 
-async function getContentsFromLinks(links) {
+async function getContentsFromLinks(links:any) {
   const articleContents = [];
   for (let link of links) {
     try {
       const response = await axios.get(link);
       const htmlContent = response.data;
-      const articleData = parseArticleData(htmlContent);
+      const articleData:any = parseArticleData(htmlContent);
       articleData["link"] = link;
       articleContents.push(articleData);
     } catch (error) {
@@ -18,7 +18,7 @@ async function getContentsFromLinks(links) {
   return articleContents;
 }
 
-function parseArticleData(htmlContent) {
+function parseArticleData(htmlContent:any) {
   const $ = cheerio.load(htmlContent);
 
   const title = $(".entry-title .title-article").text().trim();
@@ -26,7 +26,7 @@ function parseArticleData(htmlContent) {
   const date = $(".updated .date_x").text().trim();
   const content = $(".entry-content .fulltext").text().trim();
 
-  let image = $(".wp-post-image .img-responsive").first();
+  let image:any = $(".wp-post-image .img-responsive").first();
   if (image) {
     image = image.attr("src");
   }
@@ -42,4 +42,4 @@ function parseArticleData(htmlContent) {
   return articleData;
 }
 
-module.exports = getContentsFromLinks;
+export default getContentsFromLinks;

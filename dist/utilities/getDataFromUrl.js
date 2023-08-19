@@ -1,11 +1,15 @@
 "use strict";
-const axios = require("axios");
-const cheerio = require("cheerio");
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const axios_1 = __importDefault(require("axios"));
+const cheerio_1 = __importDefault(require("cheerio"));
 async function getContentsFromLinks(links) {
     const articleContents = [];
     for (let link of links) {
         try {
-            const response = await axios.get(link);
+            const response = await axios_1.default.get(link);
             const htmlContent = response.data;
             const articleData = parseArticleData(htmlContent);
             articleData["link"] = link;
@@ -19,7 +23,7 @@ async function getContentsFromLinks(links) {
     return articleContents;
 }
 function parseArticleData(htmlContent) {
-    const $ = cheerio.load(htmlContent);
+    const $ = cheerio_1.default.load(htmlContent);
     const title = $(".entry-title .title-article").text().trim();
     const author = $(".entry-author .url .fn .spip_in").text().trim();
     const date = $(".updated .date_x").text().trim();
@@ -37,5 +41,5 @@ function parseArticleData(htmlContent) {
     };
     return articleData;
 }
-module.exports = getContentsFromLinks;
+exports.default = getContentsFromLinks;
 //# sourceMappingURL=getDataFromUrl.js.map

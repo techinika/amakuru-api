@@ -1,8 +1,8 @@
-const express = require("express");
-const { kinyarwanda } = require("../../controllers/getAllArticles");
+import express from "express";
+import ArticleController from "../../controllers/ArticleController";
 
 const route = express.Router();
 
-route.get("/", kinyarwanda);
+route.get("/kin", ArticleController.getKinyarwandaArticles);
 
-module.exports = route;
+export default route;
