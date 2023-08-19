@@ -4,8 +4,8 @@
   "description": "This is an API that collects news from different news sources in Rwanda and returns mixed news that can be consumed once.",
   "main": "src/app.js",
   "scripts": {
-    "dev": "nodemon src/app.js",
-    "start": "node src/app.js"
+    "dev": "nodemon src/app.ts",
+    "start": "node src/app.ts"
   },
   "author": "Techinika Devs",
   "license": "ISC",

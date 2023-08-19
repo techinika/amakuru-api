@@ -11,16 +11,17 @@ datasource db {
 }
 
 model Article {
-  id          Int      @id @default(autoincrement())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  title       String   @db.VarChar(255)
-  imageLink   String   @db.VarChar(500)
-  content     String?
-  postLink    String?
-  publishedAt Boolean  @default(false)
-  author      User     @relation(fields: [authorId], references: [id])
-  authorId    Int
+  id            Int       @id @default(autoincrement())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  title         String    @db.VarChar(255)
+  imageLink     String    @db.VarChar(500)
+  content       String?
+  postLink      String?
+  publishedAt   DateTime?
+  publishStatus Boolean   @default(true)
+  author        User      @relation(fields: [authorId], references: [id])
+  authorId      Int
 }
 
 model Profile {
