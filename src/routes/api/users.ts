@@ -7,5 +7,6 @@ route.post("/create", UserController.createUser);
 route.get("/all", UserController.getUsers);
 route.get("/:email", UserController.getOneUser);
 route.delete("/:email", UserController.deleteUser);
+route.patch("/:email", UserController.updateUser);
 
 export default route;

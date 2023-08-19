@@ -65,6 +65,29 @@ const UserController = {
     }
     
   },
+  updateUser: async function(req:any, res:any, next:any){
+    const uniqueEmail = req.params.email;
+    try {
+      const user = await prisma.user.update({
+        where: {
+          email: uniqueEmail,
+        },
+        data: {
+          name: req.body.name,
+          email: req.body.email
+        }
+    });
+      if(user) {
+        res.status(200).send({status: 200, message: `User with email ${uniqueEmail} is updated!`, user})
+      }else {
+        res.status(404).send({status: 404, message: `User with email ${uniqueEmail} is not found!`})
+      }
+    } catch (error:any) {
+      console.log(error.message);
+      next()
+    }
+    
+  },
 };
 
 export default UserController;
