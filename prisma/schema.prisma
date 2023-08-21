@@ -15,10 +15,13 @@ model Article {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   title         String    @db.VarChar(255)
+  slug          String?   @unique @db.VarChar(60)
   imageLink     String    @db.VarChar(500)
   content       String?
   postLink      String?
+  lang          String?
   publishedAt   DateTime?
+  unpublishedAt DateTime?
   publishStatus Boolean   @default(true)
   author        User      @relation(fields: [authorId], references: [id])
   authorId      Int

@@ -1,3 +1,5 @@
+import {PrismaClient} from "@prisma/client";
+const prisma = new PrismaClient();
 import getLinksFromSitemap from "../utilities/findLinksOnTheWeb";
 import getContentsFromLinks from "../utilities/getDataFromUrl";
 
@@ -19,6 +21,57 @@ let enSitemapFiles = [
 ];
 
 const ArticleController = {
+  createArticle: async function(req: any, res: any, next: any){
+    try{
+      let imageLink = "image"
+      if(imageLink){
+        let article = await prisma.article.create({
+          data: {
+            title: req.body.title,
+            imageLink: imageLink,
+            content: req.body.content,
+            postLink: null,
+            publishedAt: req.body.publishedAt ? req.body.publishedAt : new Date(),
+            publishStatus: true,
+            authorId: req.body.author,
+            updatedAt: new Date()
+          }
+        });
+        if(article) {
+          res.status(201).send({ status: 201, message: "Article published!", article})
+        }else{
+          res.status(400).send({status: 400, message: "Failed to create a new article"})
+        }
+      }else {
+        res.status(500).send({ error: "Failed to upload an image" });
+      }
+    }catch(err: any){
+      console.log(err);
+      next();
+    }
+  },
+  unpublishArticle: async function(req: any, res:any, next:any) {
+    const uniqueId = req.params.id;
+    try {
+      const article = await prisma.article.update({
+        where: {
+          id: uniqueId,
+        },
+        data: {
+          publishStatus: false,
+          unpublishedAt: new Date(),
+        }
+    });
+      if(article) {
+        res.status(200).send({status: 200, message: `Article with ID ${uniqueId} is unpublished!`, article})
+      }else {
+        res.status(404).send({status: 404, message: `Article with ID ${uniqueId} is not found!`})
+      }
+    } catch (error:any) {
+      console.log(error.message);
+      next()
+    }
+  },
   getKinyarwandaArticles: async (req:any, res:any, next:any) => {
     try {
       let links = await getLinksFromSitemap(kinSitemapFiles);

@@ -12,6 +12,8 @@ const UserController = {
       const user = await prisma.user.create({data:{name:req.body.name, email:req.body.email}});
       if(user) {
         res.status(201).send({status: 201, message: "User is created", user})
+      }else {
+        res.status(400).send({status: 400, message: "Failed to create a new user"})
       }
     } catch (error:any) {
       console.log(error.message);
