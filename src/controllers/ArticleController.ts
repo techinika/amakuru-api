@@ -2,6 +2,7 @@ import {PrismaClient} from "@prisma/client";
 const prisma = new PrismaClient();
 import getLinksFromSitemap from "../utilities/findLinksOnTheWeb";
 import getContentsFromLinks from "../utilities/getDataFromUrl";
+import uploadToCloudinary from "../helpers/uploadImage";
 
 /*
 ** 
@@ -23,27 +24,38 @@ let enSitemapFiles = [
 const ArticleController = {
   createArticle: async function(req: any, res: any, next: any){
     try{
-      let imageLink = "image"
-      if(imageLink){
-        let article = await prisma.article.create({
-          data: {
-            title: req.body.title,
-            imageLink: imageLink,
-            content: req.body.content,
-            postLink: null,
-            publishedAt: req.body.publishedAt ? req.body.publishedAt : new Date(),
-            publishStatus: true,
-            authorId: req.body.author,
-            updatedAt: new Date()
-          }
-        });
-        if(article) {
-          res.status(201).send({ status: 201, message: "Article published!", article})
-        }else{
-          res.status(400).send({status: 400, message: "Failed to create a new article"})
+      let existingArticle = await prisma.article.findUnique({
+        where: {
+          slug: req.body.slug
         }
-      }else {
-        res.status(500).send({ error: "Failed to upload an image" });
+      })
+      if(!existingArticle){
+        let imageLink = await uploadToCloudinary(req.body.image, req.body.slug);
+        if(imageLink){
+          let article = await prisma.article.create({
+            data: {
+              title: req.body.title,
+              imageLink: imageLink,
+              content: req.body.content,
+              slug: req.body.slug || null,
+              postLink: null,
+              publishedAt: req.body.publishedAt || new Date(),
+              publishStatus: true,
+              authorId: req.body.author,
+              updatedAt: new Date(),
+              language: req.body.language || null
+            }
+          });
+          if(article) {
+            res.status(201).send({ status: 201, message: "Article published!", article})
+          }else{
+            res.status(400).send({status: 400, message: "Failed to create a new article"})
+          }
+        }else {
+          res.status(500).send({ error: "Failed to upload an image" });
+        }
+      } else {
+        res.status(400).send({ status: 400, message: "Article already exists!"})
       }
     }catch(err: any){
       console.log(err);

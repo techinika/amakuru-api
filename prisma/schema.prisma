@@ -19,7 +19,7 @@ model Article {
   imageLink     String    @db.VarChar(500)
   content       String?
   postLink      String?
-  lang          String?
+  language      String?
   publishedAt   DateTime?
   unpublishedAt DateTime?
   publishStatus Boolean   @default(true)
